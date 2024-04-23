@@ -1,33 +1,49 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include "AS5600.h"
+#include <Adafruit_INA219.h>
 
-AS5600 as5600;
+#define AS5600_ADDRESS 0x36
 
-// Define the analog input pin
-const int analogPin = A0; // Change this to the pin you're using
+Adafruit_INA219 ina219;
 
 void setup() {
- Serial.begin(115200); // Start serial communication at 115200 baud
- Wire.begin(); // Initialize I2C communication
+    Wire.begin();
+    Serial.begin(9600);
 
- if (!as5600.begin()) { // Check if the sensor is successfully initialized
-    Serial.println("Failed to connect to AS5600 sensor."); // Print error message if connection fails
- } else {
-    Serial.println("Connected to AS5600 sensor."); // Print success message if connection is successful
- }
+    if (!ina219.begin()) {
+        Serial.println("Failed to find INA219 chip");
+        while (1);
+    }
+
+    ina219.setCalibration_16V_400mA();
 }
 
 void loop() {
- uint16_t rawAngle = as5600.readAngle(); // Read the raw angle
- float angleDegrees = rawAngle * AS5600_RAW_TO_DEGREES; // Convert to degrees
- Serial.print("Angle: ");
- Serial.print(angleDegrees);
- Serial.println("°"); // Send the angle over serial
+    Wire.beginTransmission(AS5600_ADDRESS);
+    Wire.write(0x0E);
+    Wire.endTransmission();
+    Wire.requestFrom(AS5600_ADDRESS, 2);
 
- int analogValue = analogRead(analogPin); // Read the analog input
- //Serial.print("Analog Value: ");
- //Serial.println(analogValue); // Print the analog value
+    if (Wire.available() >= 2){
+        int highByte = Wire.read();
+        int lowByte = Wire.read();
+        int angle_raw = (highByte << 8) | lowByte;
 
- delay(1000); // Wait for 1 second
+        float angle_degrees = (angle_raw * 360.0) / 4096.0;
+        Serial.print(angle_degrees);
+        Serial.print(",");
+    }
+
+    float shuntVoltage = ina219.getShuntVoltage_mV();
+    float busVoltage = ina219.getBusVoltage_V();
+    float current_mA = ina219.getCurrent_mA();
+
+    Serial.print(busVoltage);
+    Serial.print(",");
+    Serial.print(shuntVoltage);
+    Serial.print(",");
+    Serial.println(current_mA);
+
+    // delay(1000);
 }
+

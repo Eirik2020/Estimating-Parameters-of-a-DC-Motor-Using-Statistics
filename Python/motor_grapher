@@ -1,0 +1,59 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Read the data from the CSV file
+df = pd.read_csv('motor.csv')
+
+# Concatenate the columns with the same name
+angle_raw_combined = df.filter(like='Angle Raw').astype(str).apply(','.join, axis=1)
+bus_voltage_combined = df.filter(like='Bus Voltage (V)').astype(str).apply(','.join, axis=1)
+shunt_voltage_combined = df.filter(like='Shunt Voltage (mV)').astype(str).apply(','.join, axis=1)
+current_combined = df.filter(like='Current (mA)').astype(str).apply(','.join, axis=1)
+
+# Create a new DataFrame with the combined columns
+combined_df = pd.DataFrame({
+    'Angle Raw': angle_raw_combined,
+    'Bus Voltage': bus_voltage_combined,
+    'Shunt Voltage': shunt_voltage_combined,
+    'Current': current_combined
+})
+
+# Convert concatenated string back to numeric values
+combined_df = combined_df.apply(lambda x: pd.to_numeric(x.str.split(',')))
+
+# Apply a low-pass filter (exponentially weighted moving average)
+alpha = 0.2  # Smoothing factor (adjust as needed)
+df_smoothed = combined_df.ewm(alpha=alpha).mean()
+
+# Create a figure with 4 subplots
+fig, axs = plt.subplots(4, 1, figsize=(10, 8))
+
+# Plot angle_raw
+axs[0].plot(df_smoothed.index, df_smoothed['Angle Raw'], color='blue')
+axs[0].set_title('Angle Raw (Smoothed)')
+axs[0].set_xlabel('Sample')
+axs[0].set_ylabel('Angle')
+
+# Plot bus voltage
+axs[1].plot(df_smoothed.index, df_smoothed['Bus Voltage'], color='red')
+axs[1].set_title('Bus Voltage (Smoothed)')
+axs[1].set_xlabel('Sample')
+axs[1].set_ylabel('Voltage (V)')
+
+# Plot shunt voltage
+axs[2].plot(df_smoothed.index, df_smoothed['Shunt Voltage'], color='green')
+axs[2].set_title('Shunt Voltage (Smoothed)')
+axs[2].set_xlabel('Sample')
+axs[2].set_ylabel('Voltage (mV)')
+
+# Plot current
+axs[3].plot(df_smoothed.index, df_smoothed['Current'], color='purple')
+axs[3].set_title('Current (Smoothed)')
+axs[3].set_xlabel('Sample')
+axs[3].set_ylabel('Current (mA)')
+
+# Adjust layout
+plt.tight_layout()
+
+# Show the plot
+plt.show()

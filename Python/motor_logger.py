@@ -1,17 +1,67 @@
 import serial
+import time
+import os
+import pandas as pd
 
-# Replace 'COM3' with the serial port your Arduino is connected to
-# For example, if your Arduino is connected to COM7, use 'COM7'
-port = serial.Serial('COM3', baudrate=115200, timeout=3.0)
+# Configuration
+port = 'COM3'
+csv_file = 'motor.csv'
+n_samples = 400
 
-while True:
-    try:
-        # Read a line from the serial port
-        line = port.readline().decode('utf-8').strip()
-        # Print the received line
-        print(line)
-    except KeyboardInterrupt:
-        # Exit the loop when Ctrl+C is pressed
-        break
+# Open the serial port
+ser = serial.Serial(port, 9600, timeout=1)
+print("Connection established.")
 
-port.close()
+# Initialize empty lists to store the data
+bus_voltage = []
+shunt_voltage = []
+current = []
+angle = []
+
+# Start time
+start_time = time.time()
+print("Starting recording...")
+
+# Collect data
+for i in range(n_samples):
+    line = ser.readline().decode('utf-8').strip()
+    if line:
+        data = line.split(',')
+        if len(data) == 4:
+            angle_raw = float(data[0])
+            bus_voltage.append(float(data[1]))  # Convert to float
+            shunt_voltage.append(float(data[2]))  # Convert to float
+            current.append(float(data[3]))  # Convert to float
+            angle.append(angle_raw)
+
+# Close the serial port
+ser.close()
+
+time_tot = time.time() - start_time
+print("Recording Complete.")
+print("Time spent logging: {:.2f} seconds".format(time_tot))
+print("Storing data...")
+
+# Create a DataFrame from the collected data
+df = pd.DataFrame({
+    'Angle Raw': angle,
+    'Bus Voltage (V)': bus_voltage,
+    'Shunt Voltage (mV)': shunt_voltage,
+    'Current (mA)': current
+})
+
+# Check if the file exists, and append or create accordingly
+if os.path.isfile(csv_file):  # File exists
+    # Read the CSV file into a DataFrame
+    df_old = pd.read_csv(csv_file)
+
+    # Concatenate the old DataFrame with the new one
+    df = pd.concat([df_old, df], axis=1)
+
+# Write the DataFrame to the CSV file
+df.to_csv(csv_file, index=False)
+
+# Report
+print("-------------------------------------------------------------------")
+print("Data saved to {}: {} samples recorded in {:.2f} seconds".format(csv_file, n_samples, time_tot))
+print("-------------------------------------------------------------------")
