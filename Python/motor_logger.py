@@ -5,7 +5,7 @@ import pandas as pd
 
 # Configuration
 port = 'COM3'
-csv_file = 'motor.csv'
+csv_file = 'motor2.csv'
 n_samples = 400
 
 # Open the serial port
@@ -17,6 +17,7 @@ bus_voltage = []
 shunt_voltage = []
 current = []
 angle = []
+t = []
 
 # Start time
 start_time = time.time()
@@ -26,6 +27,7 @@ print("Starting recording...")
 for i in range(n_samples):
     line = ser.readline().decode('utf-8').strip()
     if line:
+        # Parse and store data
         data = line.split(',')
         if len(data) == 4:
             angle_raw = float(data[0])
@@ -33,6 +35,7 @@ for i in range(n_samples):
             shunt_voltage.append(float(data[2]))  # Convert to float
             current.append(float(data[3]))  # Convert to float
             angle.append(angle_raw)
+            t.append(time.time() - start_time)
 
 # Close the serial port
 ser.close()
@@ -44,10 +47,11 @@ print("Storing data...")
 
 # Create a DataFrame from the collected data
 df = pd.DataFrame({
-    'Angle Raw': angle,
-    'Bus Voltage (V)': bus_voltage,
-    'Shunt Voltage (mV)': shunt_voltage,
-    'Current (mA)': current
+    'Angle': angle,
+    'V_bus': bus_voltage,
+    'V_shunt': shunt_voltage,
+    'current': current,
+    'time': t
 })
 
 # Check if the file exists, and append or create accordingly
