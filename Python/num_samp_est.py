@@ -9,7 +9,7 @@ err = 0.001
 
 ## Data processing ##
 # Step 1: Read the CSV file into a DataFrame
-df = pd.read_csv('sample_time_test.csv')
+df = pd.read_csv('CSV_files/sample_time_test.csv')
 
 # Convert to np array
 numpy_array = df.to_numpy()

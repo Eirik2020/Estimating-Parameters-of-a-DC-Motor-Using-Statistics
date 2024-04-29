@@ -14,12 +14,16 @@ sns.scatterplot(x="total_bill", y="tip", data=tips)
 # Display the plot
 plt.show()
 
+# Enable saving plots
+SAVE = True
 
 # Save plot
 folder_name = "figures" # Folder name
 file_name = "heyhey_plot.pdf" # Plot name
 file_path = os.path.join(folder_name, file_name) # Generate file path
-plt.savefig(file_path, format='pdf')
+
+if SAVE:
+    plt.savefig(file_path, format='pdf')
 
 
 

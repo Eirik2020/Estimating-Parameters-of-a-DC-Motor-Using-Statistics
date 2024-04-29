@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 # Step 1: Read the CSV file into a DataFrame
-df = pd.read_csv('load_cell_cal.csv')
+df = pd.read_csv('CSV_files/load_cell_cal.csv')
 
 
 # Step 2: Calculate the mean of each column
