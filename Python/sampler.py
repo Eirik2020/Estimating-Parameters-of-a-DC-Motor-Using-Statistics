@@ -6,7 +6,7 @@ import pandas as pd
 
 # Configuration
 port = 'COM3'
-csv_file = 'load_cell_cal.csv'
+csv_file = 'CSV_files/load_cell_cal.csv'
 #log_time = 40
 n_samples = 3000
 
