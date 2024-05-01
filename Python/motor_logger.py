@@ -5,7 +5,7 @@ import pandas as pd
 
 # Configuration
 port = 'COM3'
-csv_file = 'Python\CSV_files\motor3.csv'
+csv_file = 'test.csv'
 n_samples = 400
 
 # Open the serial port
