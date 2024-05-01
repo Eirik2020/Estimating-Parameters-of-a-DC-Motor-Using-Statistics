@@ -5,13 +5,14 @@ arduino_port = 'COM3'
 baud_rate = 9600
 
 ser = serial.Serial(arduino_port, baud_rate)
+print("Connected to Arduino port:", arduino_port)
 
 def read_data():
     while True:
         line = ser.readline().decode('utf-8').strip()
         if line:
             data = line.split(',')
-            if len(data) == 3:
+            if len(data) == 4:
                 bus_voltage = data[0]
                 shunt_voltage = data[1]
                 current_mA = data[2]
@@ -19,6 +20,7 @@ def read_data():
                 print("Bus Voltage:", bus_voltage, "V")
                 print("Shunt Voltage:", shunt_voltage, "mV")
                 print("Current:", current_mA, "mA")
+            
             #else:
                 #print("Received data is not in the expected format:", line)
         time.sleep(0.1)

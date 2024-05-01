@@ -31,19 +31,6 @@ void loop() {
 
         float angle_degrees = (angle_raw * 360.0) / 4096.0;
         Serial.print(angle_degrees);
-        Serial.print(",");
+        Serial.println();  // Added this line to print a newline character after each angle
     }
-
-    float shuntVoltage = ina219.getShuntVoltage_mV();
-    float busVoltage = ina219.getBusVoltage_V();
-    float current_mA = ina219.getCurrent_mA();
-
-    Serial.print(busVoltage);
-    Serial.print(",");
-    Serial.print(shuntVoltage);
-    Serial.print(",");
-    Serial.println(current_mA);
-
-    // delay(1000);
 }
-
