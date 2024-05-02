@@ -19,6 +19,7 @@ void setup() {
 }
 
 void loop() {
+    // Read and print AS5600 data
     Wire.beginTransmission(AS5600_ADDRESS);
     Wire.write(0x0E);
     Wire.endTransmission();
@@ -31,6 +32,16 @@ void loop() {
 
         float angle_degrees = (angle_raw * 360.0) / 4096.0;
         Serial.print(angle_degrees);
-        Serial.println();  // Added this line to print a newline character after each angle
+        Serial.print(","); 
     }
+    
+    // Read and print INA219 data
+    float shuntVoltage_mV = ina219.getShuntVoltage_mV(); 
+    float busVoltage_V = ina219.getBusVoltage_V();
+    float current_mA = ina219.getCurrent_mA();
+    Serial.print(busVoltage_V);
+    Serial.print(",");
+    Serial.print(shuntVoltage_mV); 
+    Serial.print(",");
+    Serial.println(current_mA);
 }
