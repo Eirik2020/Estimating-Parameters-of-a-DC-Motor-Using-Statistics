@@ -5,7 +5,7 @@ import pandas as pd
 
 # Configuration
 port = 'COM3'
-csv_file = 'locked_rotor.csv'
+csv_file = 'unlocked_rotor.csv'
 n_samples = 100
 
 # Open the serial port
