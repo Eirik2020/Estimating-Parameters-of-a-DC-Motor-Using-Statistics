@@ -14622,6 +14622,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Configuration">Configuration<a class="anchor-link" href="#Configuration">&#182;</a></h2><ul>
 <li>port: The port refers to the COM port or USB port the microcontroller is connected to.</li>
+<li>baud_rate: Set baud rate for communication, match this with the microcontroller code.</li>
 <li>csv_file: The name of the csv file for the generated data.</li>
 <li>CSV_folder_name: The name of the folder the csv shall be stored in.</li>
 <li>n_samples: The number of samples you wish to collect.</li>
@@ -14639,6 +14640,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">port</span> <span class="o">=</span> <span class="s1">&#39;COM3&#39;</span>
+<span class="n">baud_rate</span> <span class="o">=</span> <span class="mi">9600</span>
 <span class="n">csv_file</span> <span class="o">=</span> <span class="s1">&#39;test.csv&#39;</span>
 <span class="n">CSV_folder_name</span> <span class="o">=</span> <span class="s2">&quot;CSV_files&quot;</span>
 <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">100</span> 
@@ -14669,7 +14671,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Open the serial port</span>
-<span class="n">ser</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="mi">9600</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ser</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">baud_rate</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Connection established.&quot;</span><span class="p">)</span>
 
 
@@ -14736,7 +14738,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <pre>Connection established.
 Starting recording...
 Recording Complete.
-Time spent logging: 3.37 seconds
+Time spent logging: 3.36 seconds
 Storing data...
 </pre>
 </div>
@@ -14815,7 +14817,7 @@ Storing data...
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>-------------------------------------------------------------------
-Data saved to test.csv: 100 samples recorded in 3.37 seconds
+Data saved to test.csv: 100 samples recorded in 3.36 seconds
 -------------------------------------------------------------------
 </pre>
 </div>
