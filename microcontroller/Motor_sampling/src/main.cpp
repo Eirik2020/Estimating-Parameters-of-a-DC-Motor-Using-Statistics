@@ -15,7 +15,7 @@ void setup() {
         while (1);
     }
 
-    ina219.setCalibration_16V_400mA();
+    // ina219.setCalibration_32V_2A();
 }
 
 void loop() {
