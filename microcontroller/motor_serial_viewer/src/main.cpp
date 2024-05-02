@@ -19,7 +19,6 @@ void setup() {
 }
 
 void loop() {
-    // Read and print AS5600 data
     Wire.beginTransmission(AS5600_ADDRESS);
     Wire.write(0x0E);
     Wire.endTransmission();
@@ -31,17 +30,27 @@ void loop() {
         int angle_raw = (highByte << 8) | lowByte;
 
         float angle_degrees = (angle_raw * 360.0) / 4096.0;
-        Serial.print(angle_degrees);
-        Serial.print(","); 
+        Serial.print("Angle: ");
+        Serial.println(angle_degrees);
+
+        float current_mA = ina219.getCurrent_mA();
+        float shuntVoltage_mV = ina219.getShuntVoltage_mV();
+        float busVoltage_V = ina219.getBusVoltage_V();
+
+        Serial.print("Current: ");
+        Serial.print(current_mA);
+        Serial.println(" mA");
+
+        Serial.print("Shunt Voltage: ");
+        Serial.print(shuntVoltage_mV);
+        Serial.println(" mV");
+
+        Serial.print("Bus Voltage: ");
+        Serial.print(busVoltage_V);
+        Serial.println(" V");
+
+        Serial.println(); // Blank line for readability
     }
-    
-    // Read and print INA219 data
-    float shuntVoltage_mV = ina219.getShuntVoltage_mV(); 
-    float busVoltage_V = ina219.getBusVoltage_V();
-    float current_mA = ina219.getCurrent_mA();
-    Serial.print(busVoltage_V);
-    Serial.print(",");
-    Serial.print(shuntVoltage_mV); 
-    Serial.print(",");
-    Serial.println(current_mA);
+
+    delay(500); // Delay for 500 milliseconds
 }

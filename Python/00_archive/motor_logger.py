@@ -5,7 +5,7 @@ import pandas as pd
 
 # Configuration
 port = 'COM3'
-csv_file = 'locked_rotor2.csv'
+csv_file = 'test.csv'
 n_samples = 100
 
 # Open the serial port
@@ -69,3 +69,4 @@ df.to_csv(csv_file, index=False)
 print("-------------------------------------------------------------------")
 print("Data saved to {}: {} samples recorded in {:.2f} seconds".format(csv_file, n_samples, time_tot))
 print("-------------------------------------------------------------------")
+

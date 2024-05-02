@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../motor_serial_viewer"
+		},
+		{
+			"name": "Motor_sampling",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
